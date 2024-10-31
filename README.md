@@ -41,4 +41,5 @@ Write in the README.md instructions for the execution of the automated tests.
 - [ ] Use requests to write API tests
 - [ ] Write POM
 - [ ] Write UI tests
+- [ ] Write logging
 - [ ] Write Usage and Description in README.md
