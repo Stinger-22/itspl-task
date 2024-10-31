@@ -1,0 +1,21 @@
+[project]
+name = "itspl-task"
+description = "Automation tests for Contact List App"
+readme = "README.md"
+
+[project.urls]
+Repository = "https://github.com/Stinger-22/itspl-task"
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["ALL"]
+
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+log_cli = true
+log_cli_level = "INFO"
+log_cli_format = "%(asctime)s [%(levelname)s] %(message)s (%(filename)s:%(lineno)s)"
+log_cli_date_format = "%Y-%m-%d %H:%M:%S"

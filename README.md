@@ -1,5 +1,5 @@
 # ITSPL Task
-You have to test Contact List App (https://thinking-tester-contact-list.herokuapp.com/).\
+You have to test Contact List App (https://thinking-tester-contact-list.herokuapp.com/).  
 Write automation tests using *pytest* to validate different operations with the app. You should use fixtures for data preparation. Automation tests must validate UI and API.
 
 ## Minimum Requirements
@@ -13,7 +13,7 @@ Write automation tests using *pytest* to validate different operations with the 
 
 ### Examples of API tests:
 1. Positive test cases:
-    - Loggging in (receiving token)
+    - Logging in (receiving token)
 	- Receiving contact
 2. Negative test cases:
     - Deleting non-existent contact
@@ -29,3 +29,16 @@ Write automation tests using *pytest* to validate different operations with the 
 
 Upload your project on GitHub or another repository.\
 Write in the README.md instructions for the execution of the automated tests.
+
+## Description
+
+## Usage
+
+## TODO Checklist
+- [ ] Implement user entity
+- [ ] Implement contact entity
+- [ ] Handle token with fixture
+- [ ] Use requests to write API tests
+- [ ] Write POM
+- [ ] Write UI tests
+- [ ] Write Usage and Description in README.md
