@@ -3,7 +3,7 @@ import logging
 
 import pytest
 
-from tests.api.test_cases import USERS_REGISTRATION, USERS_REGISTRATION_INVALID, USERS_UPDATED, USERS_UPDATED_INVALID
+from tests.api.test_cases_user import USERS_REGISTRATION, USERS_REGISTRATION_INVALID, USERS_UPDATED, USERS_UPDATED_INVALID
 from util.admin.admin_api import AdminAPI, AdminAPIException
 
 LOGGER = logging.getLogger(__name__)

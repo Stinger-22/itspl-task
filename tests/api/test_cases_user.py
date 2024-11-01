@@ -44,7 +44,7 @@ USERS_REGISTRATION_INVALID = [
             "firstName": "",
             "lastName": "Green",
             "email": "john.green@mail.com",
-            "password": "1234567",
+            "password": "1234567890",
         },
         "Empty firstName",
     ),
@@ -53,7 +53,7 @@ USERS_REGISTRATION_INVALID = [
             "firstName": "John",
             "lastName": "",
             "email": "john.green@mail.com",
-            "password": "1234567",
+            "password": "1234567890",
         },
         "Empty lastName",
     ),
@@ -62,7 +62,7 @@ USERS_REGISTRATION_INVALID = [
             "firstName": "John",
             "lastName": "Green",
             "email": "",
-            "password": "1234567",
+            "password": "1234567890",
         },
         "Empty email",
     ),
@@ -88,7 +88,7 @@ USERS_REGISTRATION_INVALID = [
         {
             "lastName": "Green",
             "email": "john.green@mail.com",
-            "password": "1234567",
+            "password": "1234567890",
         },
         "Missing field firstName",
     ),
@@ -96,7 +96,7 @@ USERS_REGISTRATION_INVALID = [
         {
             "firstName": "John",
             "email": "john.green@mail.com",
-            "password": "1234567",
+            "password": "1234567890",
         },
         "Missing field lastName",
     ),
@@ -104,7 +104,7 @@ USERS_REGISTRATION_INVALID = [
         {
             "firstName": "John",
             "lastName": "Green",
-            "password": "1234567",
+            "password": "1234567890",
         },
         "Missing field email",
     ),
@@ -124,7 +124,7 @@ USERS_REGISTRATION_INVALID = [
     ),
     (
         {
-            "firstName": "",
+            "firstName": "John",
             "lastName": "Green",
             "email": "john.green@mail.com",
             "password": "111111",
@@ -133,12 +133,66 @@ USERS_REGISTRATION_INVALID = [
     ),
     (
         {
-            "firstName": "",
+            "firstName": "John",
             "lastName": "Green",
             "email": "john.green@mail.com",
             "password": "11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
         },
         "Password longer than 100 characters (101 in test)",
+    ),
+    (
+        {
+            "firstName": "John",
+            "lastName": "Green",
+            "email": "john.greenmail.com",
+            "password": "1234567890",
+        },
+        "Email without @",
+    ),
+    (
+        {
+            "firstName": "John",
+            "lastName": "Green",
+            "email": "@mail.com",
+            "password": "1234567890",
+        },
+        "Email without user",
+    ),
+    (
+        {
+            "firstName": "John",
+            "lastName": "Green",
+            "email": "john.green@",
+            "password": "1234567890",
+        },
+        "Email without domain",
+    ),
+    (
+        {
+            "firstName": "John",
+            "lastName": "Green",
+            "email": "john.green mail.com",
+            "password": "1234567890",
+        },
+        "Email with space",
+    ),
+    (
+        {
+            "firstName": "John",
+            "lastName": "Green",
+            "email": "john.green@mail",
+            "password": "1234567890",
+        },
+        "Email with invalid domain",
+    ),
+    (
+        {
+            "firstName": "John",
+            "lastName": "Green",
+            "email": "jo#n.green@mail.com",
+            "password": "1234567890",
+        },
+        "Email with invalid characters",
     ),
 ]
 
