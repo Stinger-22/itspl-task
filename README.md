@@ -35,11 +35,14 @@ Write in the README.md instructions for the execution of the automated tests.
 ## Usage
 
 ## TODO Checklist
-- [ ] Implement user entity
-- [ ] Implement contact entity
-- [ ] Handle token with fixture
+- [x] Handle token with fixture
 - [ ] Use requests to write API tests
 - [ ] Write POM
 - [ ] Write UI tests
 - [ ] Write logging
 - [ ] Write Usage and Description in README.md
+
+
+
+Notes:
+When you log in multiple times then each token is valid.
