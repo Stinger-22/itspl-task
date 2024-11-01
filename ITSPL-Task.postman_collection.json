@@ -13,20 +13,13 @@
 					"name": "Add User",
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"firstName\": \"John\",\n    \"lastName\": \"White\",\n    \"email\": \"john.white@mail.com\",\n    \"password\": \"1234567\"\n}",
+							"raw": "{\n    \"firstName\": \"John\",\n    \"lastName\": \"Green\",\n    \"email\": \"john.green@mail.com\",\n    \"password\": \"1234567890\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -65,7 +58,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"firstName\": \"John_updated\",\n    \"lastName\": \"White_updated\",\n    \"email\": \"john.white_updated@mail.com\",\n    \"password\": \"1234567_updated\"\n}",
+							"raw": "{\n    \"firstName\": \"John_updated\",\n    \"lastName\": \"White_updated\",\n    \"email\": \"john.white_updated@mail.com\",\n    \"password\": \"1234567890_updated\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -122,11 +115,14 @@
 				{
 					"name": "Log In User",
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"john.black@mail.com\",\n    \"password\": \"1234567\"\n}",
+							"raw": "{\n    \"email\": \"john.green@mail.com\",\n    \"password\": \"1234567890\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"

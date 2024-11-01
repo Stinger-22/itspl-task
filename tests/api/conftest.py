@@ -1,37 +1,61 @@
+import contextlib
 import logging
 
 import pytest
 
-from tests.api.test_cases import USER, USER_UPDATED, USERS_INVALID
-from util.admin.admin_api import AdminAPI
+from tests.api.test_cases import USERS_REGISTRATION, USERS_REGISTRATION_INVALID, USERS_UPDATED, USERS_UPDATED_INVALID
+from util.admin.admin_api import AdminAPI, AdminAPIException
 
 LOGGER = logging.getLogger(__name__)
 
-
-def user_invalid_test_case_id(user_invalid):
-    return user_invalid[1]
 
 @pytest.fixture(autouse = True, scope = "session")
 def admin():
     LOGGER.info("Creating AdminAPI")
     return AdminAPI()
 
-@pytest.fixture
-def user_raw_data() -> dict:
-    return USER
+@pytest.fixture(autouse = True)
+def cleanup(admin: AdminAPI):
+    LOGGER.info("Performing cleanup in case valid user from test cases exists")
+    with contextlib.suppress(AdminAPIException):
+        for user in USERS_REGISTRATION:
+            token = admin.log_in(user[0]["email"], user[0]["password"])
+            admin.delete_user(token)
 
-@pytest.fixture(params = USERS_INVALID, ids = user_invalid_test_case_id)
+
+def user_payload_id(entry):
+    return entry[1]
+
+def user_payload_expected_id(entry):
+    return entry[2]
+
+
+@pytest.fixture
+def user_default() -> dict:
+    return USERS_REGISTRATION[0][0]
+
+@pytest.fixture(params = USERS_REGISTRATION, ids = user_payload_id)
+def user_raw_data(request) -> dict:
+    return request.param[0]
+
+@pytest.fixture(params = USERS_REGISTRATION_INVALID, ids = user_payload_id)
 def user_raw_data_invalid(request) -> dict:
     return request.param[0]
 
+@pytest.fixture(params = USERS_UPDATED, ids = user_payload_expected_id)
+def user_updated_raw_data(request) -> dict:
+    return (request.param[0], request.param[1])
+
+@pytest.fixture(params = USERS_UPDATED_INVALID, ids = user_payload_id)
+def user_updated_raw_data_invalid(request) -> dict:
+    return request.param[0]
+
 @pytest.fixture
-def user_registered(admin: AdminAPI):
-    token = admin.create_user(USER)
-    yield USER
+def user_registered(admin: AdminAPI, user_default):
+    token = admin.create_user(user_default)
+    yield user_default
     admin.delete_user(token)
 
 @pytest.fixture
 def token(admin: AdminAPI, user_registered: dict) -> str:
     return admin.log_in(user_registered["email"], user_registered["password"])
-
-# TODO write extensive cleanup fixture for module
