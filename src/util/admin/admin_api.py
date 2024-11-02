@@ -21,49 +21,59 @@ class AdminAPI:
 
     url = "https://thinking-tester-contact-list.herokuapp.com/"
 
+    def __init__(self):
+        LOGGER.info("Created AdminAPI")
 
     def create_user(self, user: dict) -> str:
-        LOGGER.info("Creating user: %s", user)
+        LOGGER.debug("Creating user: %s", user)
         response = requests.post(AdminAPI.url + "users", json = user)
         if response.status_code == 201:
-            return response.json()["token"]
+            token = response.json()["token"]
+            LOGGER.debug("Created user and received token: %s", token)
+            return token
         exception_msg = f"Couldn't create user:\n{response.text}"
         raise AdminAPIException(exception_msg)
 
     def log_in(self, email: str, password: str) -> str:
-        LOGGER.info("Logging in user with credentials: %s, %s", email, password)
+        LOGGER.debug("Logging in user with credentials: {email: %s, password: %s}", email, password)
         login_data = {
             "email": email,
             "password": password,
         }
         response = requests.post(AdminAPI.url + "users/login", json = login_data)
         if response.status_code == 200:
-            return response.json()["token"]
+            token = response.json()["token"]
+            LOGGER.debug("Logged in and received token: %s", token)
+            return token
         exception_msg = f"Couldn't log in with the given credentials.\n{response.text}"
         raise AdminAPIException(exception_msg)
 
     def log_out(self, token: str) -> None:
-        LOGGER.info("Logging out with token: %s", token)
+        LOGGER.debug("Logging out with token: %s", token)
         response = requests.post(AdminAPI.url + "users/logout", auth = BearerAuth(token))
         if response.status_code != 200:
             exception_msg = f"Couldn't log out with the given token.\n{response.text}"
             raise AdminAPIException(exception_msg)
+        LOGGER.debug("Logged out")
 
     def get_user(self, token: str) -> dict:
-        LOGGER.info("Getting user with token: %s", token)
+        LOGGER.debug("Getting user with token: %s", token)
         response = requests.get(AdminAPI.url + "users/me", auth = BearerAuth(token))
         if response.status_code == 200:
-            return response.json()
+            data = response.json()
+            LOGGER.debug("Received user: %s", data)
+            return data
         exception_msg = f"Couldn't get user.\n{response.text}"
         raise AdminAPIException(exception_msg)
 
     def delete_user(self, token: str) -> None:
-        LOGGER.info("Deleting user with token: %s", token)
+        LOGGER.debug("Deleting user with token: %s", token)
         if token is not None:
             response = requests.delete(AdminAPI.url + "users/me", auth = BearerAuth(token))
             if response.status_code != 200:
                 exception_msg = f"Couldn't delete user with the given token.\n{response.text}"
                 raise AdminAPIException(exception_msg)
+            LOGGER.debug("User deleted")
         else:
             exception_msg = "Received token is None"
             raise TypeError(exception_msg)
