@@ -73,46 +73,57 @@ class TestAPIContact:
             exception_msg = "Invalid contact was created"
             raise AssertionError(exception_msg) from error
 
-    @pytest.mark.xfail("Not implemented")
-    def test_get_contact(self):
-        pass
+    def test_get_contact(self, token: str, contact_created: dict):
+        LOGGER.debug("Getting contact: %s", contact_created)
+        response = requests.get(TestAPIContact.endpoint + contact_created["_id"], auth = BearerAuth(token))
+        LOGGER.debug("Received response text: %s", response.text)
+        assert response.status_code == 200
+        assert "application/json" in response.headers["Content-Type"]
+        LOGGER.info("Response status code and headers are correct")
 
-    @pytest.mark.xfail("Not implemented")
-    def test_get_contact_without_auth(self):
-        pass
+        received_contact = response.json()
+        self.check_contact_equals(contact_created, received_contact)
+        LOGGER.info("Successfully received contact")
 
-    @pytest.mark.xfail("Not implemented")
+    def test_get_contact_without_auth(self, contact_created: dict):
+        LOGGER.debug("Getting contact: %s", contact_created)
+        response = requests.get(TestAPIContact.endpoint + contact_created["_id"])
+        LOGGER.debug("Received response text: %s", response.text)
+        assert response.status_code == 401
+        LOGGER.info("Can't get contact without authorization as it is intended")
+
+    @pytest.mark.xfail(reason = "Not implemented")
     def test_get_contact_list(self):
         pass
 
-    @pytest.mark.xfail("Not implemented")
+    @pytest.mark.xfail(reason = "Not implemented")
     def test_get_contact_list_without_auth(self):
         pass
 
-    @pytest.mark.xfail("Not implemented")
+    @pytest.mark.xfail(reason = "Not implemented")
     def test_update_contact(self):
         pass
 
-    @pytest.mark.xfail("Not implemented")
+    @pytest.mark.xfail(reason = "Not implemented")
     def test_update_contact_invalid(self):
         pass
 
-    @pytest.mark.xfail("Not implemented")
+    @pytest.mark.xfail(reason = "Not implemented")
     def test_patch_contact(self):
         pass
 
-    @pytest.mark.xfail("Not implemented")
+    @pytest.mark.xfail(reason = "Not implemented")
     def test_patch_contact_invalid(self):
         pass
 
-    @pytest.mark.xfail("Not implemented")
+    @pytest.mark.xfail(reason = "Not implemented")
     def test_delete_contact(self):
         pass
 
-    @pytest.mark.xfail("Not implemented")
+    @pytest.mark.xfail(reason = "Not implemented")
     def test_delete_contactwithout_auth(self):
         pass
 
-    @pytest.mark.xfail("Not implemented")
+    @pytest.mark.xfail(reason = "Not implemented")
     def test_delete_contact_list(self):
         pass

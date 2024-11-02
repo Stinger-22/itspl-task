@@ -82,14 +82,16 @@ class AdminAPI:
             raise AdminAPIException(exception_msg)
         LOGGER.debug("User deleted")
 
-    def create_contact(self, token: str, contact: dict) -> None:
+    def create_contact(self, token: str, contact: dict) -> dict:
         LOGGER.debug("Using token: %s. Creating contact: %s", token, contact)
         self._is_token_none(token)
         response = requests.post(AdminAPI.url + "contacts", auth = BearerAuth(token), json = contact)
         if response.status_code != 201:
             exception_msg = f"Couldn't create contact: {response.text}"
             raise AdminAPIException(exception_msg)
-        LOGGER.debug("Contact created")
+        created_contact = response.json()
+        LOGGER.debug("Contact created: %s", created_contact)
+        return created_contact
 
     def get_contact(self, token: str, contact_id: str) -> dict:
         LOGGER.debug("Getting contact with id: %s using token: %s", contact_id, token)
