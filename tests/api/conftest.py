@@ -10,16 +10,27 @@ LOGGER = logging.getLogger(__name__)
 
 
 @pytest.fixture(autouse = True, scope = "session")
+def unique_credentials():
+    LOGGER.info("Setting up set of unique credentials")
+    _unique_credentials = set()
+    user_test_cases = USERS_REGISTRATION + USERS_REGISTRATION_INVALID
+    for user in user_test_cases:
+        if "email" in user[0] and "password" in user[0]:
+            credential = (user[0]["email"], user[0]["password"])
+            _unique_credentials.add(credential)
+    return _unique_credentials
+
+@pytest.fixture(autouse = True, scope = "session")
 def admin():
     LOGGER.info("Creating AdminAPI")
     return AdminAPI()
 
-@pytest.fixture(autouse = True)
-def cleanup(admin: AdminAPI):
-    LOGGER.info("Performing cleanup in case valid user from test cases exists")
-    with contextlib.suppress(AdminAPIException):
-        for user in USERS_REGISTRATION:
-            token = admin.log_in(user[0]["email"], user[0]["password"])
+@pytest.fixture(autouse = True, scope = "session")
+def cleanup(admin: AdminAPI, unique_credentials: set):
+    LOGGER.info("Performing users cleanup")
+    for credential in unique_credentials:
+        with contextlib.suppress(AdminAPIException):
+            token = admin.log_in(credential[0], credential[1])
             admin.delete_user(token)
 
 
@@ -54,7 +65,13 @@ def user_updated_raw_data_invalid(request) -> dict:
 def user_registered(admin: AdminAPI, user_default):
     token = admin.create_user(user_default)
     yield user_default
-    admin.delete_user(token)
+    try:
+        admin.delete_user(token)
+    except AdminAPIException as exception:
+        token = admin.log_in(user_default["email"], user_default["password"])
+        admin.delete_user(token)
+        exception_msg = "For some reason original token was invalidated. Couldn't delete user required for test from the first attempt"
+        raise AdminAPIException(exception_msg) from exception
 
 @pytest.fixture
 def token(admin: AdminAPI, user_registered: dict) -> str:

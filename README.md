@@ -42,9 +42,22 @@ Write in the README.md instructions for the execution of the automated tests.
 - [ ] Write logging
 - [ ] Write Usage and Description in README.md
 
+### User API
 Notes:
  - [Found: manually tested in Postman] When you log in multiple times then each token is valid.
  - [Found: test_log_out_user has error] When you log out every token is invalidated - not only the one used to log out. A real use scenario is when you are logged in from your phone and PC and when you log out on your phone you can't continue the session on your PC.
+ - [Found: manually in Postman] Can create user with my _id
+ - [Found: manually in Postman] When trying to patch user and set own _id in response body there is url to AWS MongoDB database. I can ping it externally from my computer.
+ - Limits:
+   - password len: 7 <= len <= 100
+   - email doesn't allow invalid domain, spaces, missed @, missed user part, missed domain part
+   - _id len is 24
 
 Bugs:
  - [Found: automation tests] Special charactes possible in email like jo#n.green@mail.com
+
+### Contact API
+Notes:
+ - [Found: manually inspected in Postman] Contact List DELETE endpoint is not working if followed by API docs (Error 503) 
+ - [Found: manually inspected in Firefox with DevTools] API docs doesn't have information on how to delete one contact. Endpoint to get/put/delete contact needs auth and looks like `url/contacts/{{contactId}}`
+ - [Found: manually guessed in Postman] API endpoint to patch contact is `url/contacts/{{contactId}}`

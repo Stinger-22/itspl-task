@@ -46,9 +46,15 @@ class TestAPIUser:
         # Cleanup
         admin.delete_user(data["token"])
 
-    def test_create_user_invalid(self, user_raw_data_invalid: dict):
+    def test_create_user_invalid(self, admin: AdminAPI, user_raw_data_invalid: dict):
         response = requests.post(TestAPIUser.endpoint, json = user_raw_data_invalid)
-        assert response.status_code == 400
+        try:
+            assert response.status_code == 400
+        except AssertionError as error:
+            # Cleanup
+            admin.delete_user(response.json()["token"])
+            exception_msg = "Invalid user was created"
+            raise AssertionError(exception_msg) from error
 
 
     def test_get_user_myself(self, user_registered: dict, token: str):

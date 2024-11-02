@@ -171,7 +171,7 @@ USERS_REGISTRATION_INVALID = [
         {
             "firstName": "John",
             "lastName": "Green",
-            "email": "john.green mail.com",
+            "email": "john green@mail.com",
             "password": "1234567890",
         },
         "Email with space",
@@ -193,6 +193,16 @@ USERS_REGISTRATION_INVALID = [
             "password": "1234567890",
         },
         "Email with invalid characters",
+    ),
+    (
+        {
+            "_id": "111111111111111111111111",
+            "firstName": "John",
+            "lastName": "Green",
+            "email": "john.green@mail.com",
+            "password": "1234567890",
+        },
+        "User with custom _id field",
     ),
 ]
 
@@ -306,5 +316,15 @@ USERS_UPDATED_INVALID = [
             "password": "11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
         },
         "Too long password",
+    ),
+    (
+        {
+            "_id": "111111111111111111111111",
+            "firstName": "John",
+            "lastName": "Green",
+            "email": "john.green@mail.com",
+            "password": "1234567890",
+        },
+        "Change _id",
     ),
 ]
