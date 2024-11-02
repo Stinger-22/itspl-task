@@ -50,10 +50,10 @@ Notes:
  - [Found: manually in Postman] When trying to patch user and set own _id in response body there is url to AWS MongoDB database. I can ping it externally from my computer.
  - [Found: manually in Postman] When registering a user with no fields in response, it says that only firstName, userName, and password are required. When trying to register a user without email it says that "Email address is already in use" and it is misleading.
  - Limits:
+   - user required fields - all
    - password len: 7 <= len <= 100
    - email doesn't allow invalid domain, spaces, missed @, missed user part, missed domain part
    - _id len is 24
-   - user required fields - all
 
 Bugs:
  - [Found: automation tests] Special charactes possible in email like jo#n.green@mail.com
@@ -63,3 +63,13 @@ Notes:
  - [Found: manually inspected in Postman] Contact List DELETE endpoint is not working if followed by API docs (Error 503) 
  - [Found: manually inspected in Firefox with DevTools] API docs doesn't have information on how to delete one contact. Endpoint to get/put/delete contact needs auth and looks like `url/contacts/{{contactId}}`
  - [Found: manually guessed in Postman] API endpoint to patch contact is `url/contacts/{{contactId}}`
+ - Limits:
+   - contact required fields: firstName, lastName
+   - firstName, lastName: empty not allowed
+   - birthdate YYYY-mm-dd: empty not allowed, year any 4 numbers, month only 2 numbers and [01; 12], day only 2 numbers and [01;31]
+   - email: empty not allowed, same as in user tests
+   - phone: empty not allowed, strange validation - can't test it thoroughly
+   - stree1, street2, city: empty is allowed, max len 40
+   - stateProvince: empty is allowed, max len 20
+   - postalCode: empty not allowed, only numbers, len is [3; 7]
+   - country: empty is allowed, max len 40

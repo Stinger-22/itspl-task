@@ -117,6 +117,9 @@ class TestAPIUser:
         with pytest.raises(AdminAPIException):
             admin.get_user(token)
         LOGGER.info("Can't receive user that was deleted")
+        with pytest.raises(AdminAPIException):
+            admin.log_in(user_default["email"], user_default["password"])
+        LOGGER.info("Can't log in user that was deleted")
 
 
     def test_log_in_user(self, admin: AdminAPI, user_registered: dict) -> None:
