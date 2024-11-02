@@ -46,12 +46,14 @@ Write in the README.md instructions for the execution of the automated tests.
 Notes:
  - [Found: manually tested in Postman] When you log in multiple times then each token is valid.
  - [Found: test_log_out_user has error] When you log out every token is invalidated - not only the one used to log out. A real use scenario is when you are logged in from your phone and PC and when you log out on your phone you can't continue the session on your PC.
- - [Found: manually in Postman] Can create user with my _id
+ - [Found: manually in Postman] Can create user with my _id.
  - [Found: manually in Postman] When trying to patch user and set own _id in response body there is url to AWS MongoDB database. I can ping it externally from my computer.
+ - [Found: manually in Postman] When registering a user with no fields in response, it says that only firstName, userName, and password are required. When trying to register a user without email it says that "Email address is already in use" and it is misleading.
  - Limits:
    - password len: 7 <= len <= 100
    - email doesn't allow invalid domain, spaces, missed @, missed user part, missed domain part
    - _id len is 24
+   - user required fields - all
 
 Bugs:
  - [Found: automation tests] Special charactes possible in email like jo#n.green@mail.com
