@@ -50,7 +50,7 @@ class TestAPIUser:
         # Cleanup
         admin.delete_user(data["token"])
 
-    def test_create_user_invalid(self, admin: AdminAPI, user_raw_data_invalid: dict):
+    def test_create_user_invalid(self, admin: AdminAPI, user_raw_data_invalid: dict) -> None:
         response = requests.post(TestAPIUser.endpoint, json = user_raw_data_invalid)
         try:
             assert response.status_code == 400
@@ -62,7 +62,7 @@ class TestAPIUser:
             raise AssertionError(exception_msg) from error
 
 
-    def test_get_user_myself(self, user_registered: dict, token: str):
+    def test_get_user_myself(self, user_registered: dict, token: str) -> None:
         response = requests.get(TestAPIUser.endpoint + TestAPIUser.myself, auth = BearerAuth(token))
         assert response.status_code == 200
         assert "application/json" in response.headers["Content-Type"]
@@ -73,13 +73,13 @@ class TestAPIUser:
         self.check_user_equals(user_registered, received_user)
         LOGGER.info("Successfully received user")
 
-    def test_get_user_myself_without_auth(self, user_registered: dict):
+    def test_get_user_myself_without_auth(self, user_registered: dict) -> None:
         response = requests.get(TestAPIUser.endpoint + TestAPIUser.myself)
         assert response.status_code == 401
         LOGGER.info("Can't get user without authorization as it is intended")
 
 
-    def test_update_user(self, admin: AdminAPI, token: str, user_updated_raw_data: dict):
+    def test_update_user(self, admin: AdminAPI, token: str, user_updated_raw_data: dict) -> None:
         response = requests.patch(TestAPIUser.endpoint + TestAPIUser.myself, auth = BearerAuth(token), json = user_updated_raw_data[0])
         assert response.status_code == 200
         assert "application/json" in response.headers["Content-Type"]
@@ -95,7 +95,7 @@ class TestAPIUser:
         self.check_user_equals(user_updated_raw_data[1], updated_user)
         LOGGER.info("Successfully received user with updated fields")
 
-    def test_update_user_invalid(self, admin: AdminAPI, user_registered: dict, token: str, user_updated_raw_data_invalid: dict):
+    def test_update_user_invalid(self, admin: AdminAPI, user_registered: dict, token: str, user_updated_raw_data_invalid: dict) -> None:
         response = requests.patch(TestAPIUser.endpoint + TestAPIUser.myself, auth = BearerAuth(token), json = user_updated_raw_data_invalid)
         assert response.status_code == 400
         LOGGER.info("Can't update user fields to invalid ones as it is intended")
@@ -106,7 +106,7 @@ class TestAPIUser:
         LOGGER.info("User fields was not updated to invalid ones")
 
 
-    def test_delete_user(self, admin: AdminAPI, user_default: dict):
+    def test_delete_user(self, admin: AdminAPI, user_default: dict) -> None:
         # Setup
         token = admin.create_user(user_default)
 
@@ -119,7 +119,7 @@ class TestAPIUser:
         LOGGER.info("Can't receive user that was deleted")
 
 
-    def test_log_in_user(self, admin: AdminAPI, user_registered: dict):
+    def test_log_in_user(self, admin: AdminAPI, user_registered: dict) -> None:
         log_in_data = {
             "email": user_registered["email"],
             "password": user_registered["password"],
@@ -141,7 +141,7 @@ class TestAPIUser:
         self.check_user_equals(user_registered, logged_in_user)
         LOGGER.info("Can use received token and use it to get user")
 
-    def test_log_out_user(self, admin: AdminAPI, user_registered: dict):
+    def test_log_out_user(self, admin: AdminAPI, user_registered: dict) -> None:
         # Setup
         token = admin.log_in(user_registered["email"], user_registered["password"])
 
