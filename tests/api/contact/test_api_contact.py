@@ -3,7 +3,7 @@ import logging
 import pytest
 import requests
 
-from util.admin.admin_api import AdminAPI, BearerAuth
+from util.admin.admin_api import AdminAPI, AdminAPIException, BearerAuth
 
 LOGGER = logging.getLogger(__name__)
 
@@ -116,13 +116,26 @@ class TestAPIContact:
     def test_patch_contact_invalid(self):
         pass
 
-    @pytest.mark.xfail(reason = "Not implemented")
-    def test_delete_contact(self):
-        pass
+    def test_delete_contact(self, admin: AdminAPI, token: str, contact_default: dict):
+        # Setup
+        contact = admin.create_contact(token, contact_default)
 
-    @pytest.mark.xfail(reason = "Not implemented")
-    def test_delete_contactwithout_auth(self):
-        pass
+        LOGGER.debug("Deleting contact: %s", contact)
+        response = requests.delete(TestAPIContact.endpoint + contact["_id"], auth = BearerAuth(token))
+        LOGGER.debug("Received response text: %s", response.text)
+        assert response.status_code == 200
+        LOGGER.info("Response status code is correct")
+
+        with pytest.raises(AdminAPIException):
+            admin.get_contact(token, contact["_id"])
+        LOGGER.info("Can't get contact that was deleted")
+
+    def test_delete_contact_without_auth(self, contact_created: dict):
+        LOGGER.debug("Deleting contact: %s", contact_created)
+        response = requests.delete(TestAPIContact.endpoint + contact_created["_id"])
+        LOGGER.debug("Received response text: %s", response.text)
+        assert response.status_code == 401
+        LOGGER.info("Can't delete contact without authorization as it is intended")
 
     @pytest.mark.xfail(reason = "Not implemented")
     def test_delete_contact_list(self):

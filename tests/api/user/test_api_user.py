@@ -30,7 +30,9 @@ class TestAPIUser:
 
 
     def test_create_user(self, admin: AdminAPI, user_raw_data: dict) -> None:
+        LOGGER.debug("Creating user: %s", user_raw_data)
         response = requests.post(TestAPIUser.endpoint, json = user_raw_data)
+        LOGGER.debug("Received response text: %s", response.text)
         assert response.status_code == 201
         assert "application/json" in response.headers["Content-Type"]
         LOGGER.info("Response status code and headers are correct")
@@ -51,7 +53,9 @@ class TestAPIUser:
         admin.delete_user(data["token"])
 
     def test_create_user_invalid(self, admin: AdminAPI, user_raw_data_invalid: dict) -> None:
+        LOGGER.debug("Creating invalid user: %s", user_raw_data_invalid)
         response = requests.post(TestAPIUser.endpoint, json = user_raw_data_invalid)
+        LOGGER.debug("Received response text: %s", response.text)
         try:
             assert response.status_code == 400
             LOGGER.info("Invalid user was not created")
@@ -63,7 +67,9 @@ class TestAPIUser:
 
 
     def test_get_user_myself(self, user_registered: dict, token: str) -> None:
+        LOGGER.debug("Getting user %s with token %s", user_registered, token)
         response = requests.get(TestAPIUser.endpoint + TestAPIUser.myself, auth = BearerAuth(token))
+        LOGGER.debug("Received response text: %s", response.text)
         assert response.status_code == 200
         assert "application/json" in response.headers["Content-Type"]
         LOGGER.info("Response status code and headers are correct")
@@ -74,13 +80,17 @@ class TestAPIUser:
         LOGGER.info("Successfully received user")
 
     def test_get_user_myself_without_auth(self, user_registered: dict) -> None:
+        LOGGER.debug("Getting user: %s", user_registered)
         response = requests.get(TestAPIUser.endpoint + TestAPIUser.myself)
+        LOGGER.debug("Received response text: %s", response.text)
         assert response.status_code == 401
         LOGGER.info("Can't get user without authorization as it is intended")
 
 
     def test_update_user(self, admin: AdminAPI, token: str, user_updated_raw_data: dict) -> None:
+        LOGGER.debug("Updating user with %s", user_updated_raw_data[0])
         response = requests.patch(TestAPIUser.endpoint + TestAPIUser.myself, auth = BearerAuth(token), json = user_updated_raw_data[0])
+        LOGGER.debug("Received response text: %s", response.text)
         assert response.status_code == 200
         assert "application/json" in response.headers["Content-Type"]
         LOGGER.info("Response status code and headers are correct")
@@ -96,7 +106,9 @@ class TestAPIUser:
         LOGGER.info("Successfully received user with updated fields")
 
     def test_update_user_invalid(self, admin: AdminAPI, user_registered: dict, token: str, user_updated_raw_data_invalid: dict) -> None:
+        LOGGER.debug("Updating user with %s", user_updated_raw_data_invalid[0])
         response = requests.patch(TestAPIUser.endpoint + TestAPIUser.myself, auth = BearerAuth(token), json = user_updated_raw_data_invalid)
+        LOGGER.debug("Received response text: %s", response.text)
         assert response.status_code == 400
         LOGGER.info("Can't update user fields to invalid ones as it is intended")
 
@@ -110,7 +122,9 @@ class TestAPIUser:
         # Setup
         token = admin.create_user(user_default)
 
+        LOGGER.debug("Deleting user: %s", user_default)
         response = requests.delete(TestAPIUser.endpoint + TestAPIUser.myself, auth = BearerAuth(token))
+        LOGGER.debug("Received response text: %s", response.text)
         assert response.status_code == 200
         LOGGER.info("Deleted existing user")
 
