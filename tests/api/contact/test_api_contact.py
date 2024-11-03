@@ -92,13 +92,19 @@ class TestAPIContact:
         assert response.status_code == 401
         LOGGER.info("Can't get contact without authorization as it is intended")
 
-    @pytest.mark.xfail(reason = "Not implemented")
-    def test_get_contact_list(self):
-        pass
+    def test_get_contact_list(self, token: str, contact_list_created: list):
+        LOGGER.debug("Getting contact list: %s", contact_list_created)
+        response = requests.get(TestAPIContact.endpoint, auth = BearerAuth(token))
+        LOGGER.debug("Received response text: %s", response.text)
+        assert response.status_code == 200
+        assert "application/json" in response.headers["Content-Type"]
+        LOGGER.info("Response status code and headers are correct")
 
-    @pytest.mark.xfail(reason = "Not implemented")
-    def test_get_contact_list_without_auth(self):
-        pass
+        received_contact_list = response.json()
+        received_contact_list.reverse()
+        for i in range(0, len(contact_list_created)):
+            self.check_contact_equals(contact_list_created[i], received_contact_list[i])
+        LOGGER.info("Successfully received contact")
 
     @pytest.mark.xfail(reason = "Not implemented")
     def test_update_contact(self):
@@ -120,7 +126,7 @@ class TestAPIContact:
         # Setup
         contact = admin.create_contact(token, contact_default)
 
-        LOGGER.debug("Deleting contact: %s", contact)
+        LOGGER.debug("Deleting contact %s with token %s", contact, token)
         response = requests.delete(TestAPIContact.endpoint + contact["_id"], auth = BearerAuth(token))
         LOGGER.debug("Received response text: %s", response.text)
         assert response.status_code == 200
@@ -137,6 +143,17 @@ class TestAPIContact:
         assert response.status_code == 401
         LOGGER.info("Can't delete contact without authorization as it is intended")
 
-    @pytest.mark.xfail(reason = "Not implemented")
-    def test_delete_contact_list(self):
-        pass
+    def test_delete_contact_list(self, admin: AdminAPI, token: str, contact_list_default: dict):
+        # Setup
+        for contact in contact_list_default:
+            admin.create_contact(token, contact)
+
+        LOGGER.debug("Deleting contact list with token: %s", token)
+        response = requests.delete(TestAPIContact.endpoint, auth = BearerAuth(token))
+        LOGGER.debug("Received response text: %s", response.text)
+        assert response.status_code == 200
+        LOGGER.info("Response status code is correct")
+
+        with pytest.raises(AdminAPIException):
+            admin.get_contact_list(token)
+        LOGGER.info("Can't get contact list that was deleted")

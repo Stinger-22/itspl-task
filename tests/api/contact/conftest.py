@@ -44,9 +44,8 @@ def contact_created(admin: AdminAPI, token: str, contact_default: dict):
 def contact_list_created(admin: AdminAPI, token: str, contact_list_default: list):
     contact_list_default_created = []
     for contact in contact_list_default:
-        contact_list_default.append(admin.create_contact(token, contact))
+        contact_list_default_created.append(admin.create_contact(token, contact))
     LOGGER.info("Created default contact list")
     yield contact_list_default_created
-    for contact in contact_list_default_created:
-        admin.delete_contact(token, contact["_id"])
+    admin.delete_contact_list(token)
     LOGGER.info("Deleted default contact list")

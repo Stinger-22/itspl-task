@@ -112,3 +112,23 @@ class AdminAPI:
             exception_msg = f"Couldn't delete contact: {response.text}"
             raise AdminAPIException(exception_msg)
         LOGGER.debug("Contact deleted")
+
+    def get_contact_list(self, token: str) -> list:
+        LOGGER.debug("Getting contact list using token: %s", token)
+        self._is_token_none(token)
+        response = requests.get(AdminAPI.url + "contacts", auth = BearerAuth(token))
+        if response.status_code != 200:
+            exception_msg = f"Couldn't get contact list: {response.text}"
+            raise AdminAPIException(exception_msg)
+        contact_list = response.json()
+        LOGGER.debug("Received contact list: %s", contact_list)
+        return contact_list
+
+    def delete_contact_list(self, token: str) -> None:
+        LOGGER.debug("Deleting contact list using token: %s", token)
+        self._is_token_none(token)
+        response = requests.delete(AdminAPI.url + "contacts", auth = BearerAuth(token))
+        if response.status_code != 200:
+            exception_msg = f"Couldn't delete contacts: {response.text}"
+            raise AdminAPIException(exception_msg)
+        LOGGER.debug("Contact list deleted")

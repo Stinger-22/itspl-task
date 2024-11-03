@@ -106,7 +106,7 @@ class TestAPIUser:
         LOGGER.info("Successfully received user with updated fields")
 
     def test_update_user_invalid(self, admin: AdminAPI, user_registered: dict, token: str, user_updated_raw_data_invalid: dict) -> None:
-        LOGGER.debug("Updating user with %s", user_updated_raw_data_invalid[0])
+        LOGGER.debug("Updating user with %s", user_updated_raw_data_invalid)
         response = requests.patch(TestAPIUser.endpoint + TestAPIUser.myself, auth = BearerAuth(token), json = user_updated_raw_data_invalid)
         LOGGER.debug("Received response text: %s", response.text)
         assert response.status_code == 400

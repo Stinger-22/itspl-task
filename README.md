@@ -63,6 +63,7 @@ Notes:
  - [Found: manually inspected in Postman] Contact List DELETE endpoint is not working if followed by API docs (Error 503) 
  - [Found: manually inspected in Firefox with DevTools] API docs doesn't have information on how to delete one contact. Endpoint to get/put/delete contact needs auth and looks like `url/contacts/{{contactId}}`
  - [Found: manually guessed in Postman] API endpoint to patch contact is `url/contacts/{{contactId}}`
+ - [Found: manually in Postman] If try to create Contact and then the same one but give it _id of the first in response is shown MongoError
  - Limits:
    - contact required fields: firstName, lastName
    - firstName, lastName: empty not allowed
