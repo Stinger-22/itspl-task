@@ -3,7 +3,8 @@ import logging
 import pytest
 from selenium import webdriver
 
-from src.pages.log_in import LogInPage
+from tests.ui.pages.log_in import LogInPage
+from tests.ui.pages.sign_up import SignUpPage
 
 LOGGER = logging.getLogger(__name__)
 
@@ -18,3 +19,7 @@ def browser_chrome():
 @pytest.fixture
 def log_in_page(browser_chrome):
     return LogInPage(browser_chrome)
+
+@pytest.fixture
+def sign_up_page(browser_chrome):
+    return SignUpPage(browser_chrome)
