@@ -87,7 +87,7 @@ class TestAPIUser:
         LOGGER.info("Can't get user without authorization as it is intended")
 
 
-    def test_update_user(self, admin: AdminAPI, token: str, user_updated_raw_data: dict) -> None:
+    def test_patch_user(self, admin: AdminAPI, token: str, user_updated_raw_data: dict) -> None:
         LOGGER.debug("Updating user with %s", user_updated_raw_data[0])
         response = requests.patch(TestAPIUser.endpoint + TestAPIUser.myself, auth = BearerAuth(token), json = user_updated_raw_data[0])
         LOGGER.debug("Received response text: %s", response.text)
@@ -105,7 +105,7 @@ class TestAPIUser:
         self.check_user_equals(user_updated_raw_data[1], updated_user)
         LOGGER.info("Successfully received user with updated fields")
 
-    def test_update_user_invalid(self, admin: AdminAPI, user_registered: dict, token: str, user_updated_raw_data_invalid: dict) -> None:
+    def test_patch_user_invalid(self, admin: AdminAPI, user_registered: dict, token: str, user_updated_raw_data_invalid: dict) -> None:
         LOGGER.debug("Updating user with %s", user_updated_raw_data_invalid)
         response = requests.patch(TestAPIUser.endpoint + TestAPIUser.myself, auth = BearerAuth(token), json = user_updated_raw_data_invalid)
         LOGGER.debug("Received response text: %s", response.text)

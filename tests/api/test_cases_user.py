@@ -1,3 +1,4 @@
+# ({payload}, "test id")
 USERS_REGISTRATION = [
     (
         {
@@ -207,7 +208,7 @@ USERS_REGISTRATION_INVALID = [
 ]
 
 # ({payload}, {expected}, "test id")
-USERS_UPDATED = [
+USERS_PATCHED = [
     (
         {
             "firstName": "John_updated",
@@ -253,7 +254,7 @@ USERS_UPDATED = [
 ]
 
 # ({payload}, "test id")
-USERS_UPDATED_INVALID = [
+USERS_PATCHED_INVALID = [
     (
         {
             "firstName": "",

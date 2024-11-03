@@ -64,9 +64,10 @@ Notes:
  - [Found: manually inspected in Firefox with DevTools] API docs doesn't have information on how to delete one contact. Endpoint to get/put/delete contact needs auth and looks like `url/contacts/{{contactId}}`
  - [Found: manually guessed in Postman] API endpoint to patch contact is `url/contacts/{{contactId}}`
  - [Found: manually in Postman] If try to create Contact and then the same one but give it _id of the first in response is shown MongoError
+ - [Found: manually in Postman] Created contact with all fields. Updated with only firstName and lastName. After trying to get thet contact each field exists but with null value. Don't know whether to consider it good or bad sign and which outcome tests should have.
  - Limits:
    - contact required fields: firstName, lastName
-   - firstName, lastName: empty not allowed
+   - firstName, lastName: empty not allowed, max len 20
    - birthdate YYYY-mm-dd: empty not allowed, year any 4 numbers, month only 2 numbers and [01; 12], day only 2 numbers and [01;31]
    - email: empty not allowed, same as in user tests
    - phone: empty not allowed, strange validation - can't test it thoroughly

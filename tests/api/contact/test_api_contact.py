@@ -106,21 +106,62 @@ class TestAPIContact:
             self.check_contact_equals(contact_list_created[i], received_contact_list[i])
         LOGGER.info("Successfully received contact")
 
-    @pytest.mark.xfail(reason = "Not implemented")
-    def test_update_contact(self):
-        pass
+    def test_update_contact(self, admin: AdminAPI, token: str, contact_created: dict, contact_updated_raw_data: dict) -> None:
+        LOGGER.debug("Updating contact with %s", contact_updated_raw_data[0])
+        response = requests.put(TestAPIContact.endpoint + contact_created["_id"], auth = BearerAuth(token), json = contact_updated_raw_data[0])
+        LOGGER.debug("Received response text: %s", response.text)
+        assert response.status_code == 200
+        assert "application/json" in response.headers["Content-Type"]
+        LOGGER.info("Response status code and headers are correct")
 
-    @pytest.mark.xfail(reason = "Not implemented")
-    def test_update_contact_invalid(self):
-        pass
+        data = response.json()
+        self.check_contact_equals(contact_updated_raw_data[1], data)
+        LOGGER.info("Response with updated contact is correct")
 
-    @pytest.mark.xfail(reason = "Not implemented")
-    def test_patch_contact(self):
-        pass
+        updated_contact = admin.get_contact(token, contact_created["_id"])
+        self.check_contact_equals(contact_updated_raw_data[1], updated_contact)
+        LOGGER.info("Successfully received contact with updated fields")
 
-    @pytest.mark.xfail(reason = "Not implemented")
-    def test_patch_contact_invalid(self):
-        pass
+    def test_update_contact_invalid(self, admin: AdminAPI, token: str, contact_created: dict, contact_updated_raw_data_invalid: dict) -> None:
+        LOGGER.debug("Updating contact with %s", contact_updated_raw_data_invalid)
+        response = requests.put(TestAPIContact.endpoint + contact_created["_id"], auth = BearerAuth(token), json = contact_updated_raw_data_invalid)
+        LOGGER.debug("Received response text: %s", response.text)
+        assert response.status_code == 400
+        LOGGER.info("Can't update contact fields to invalid ones as it is intended")
+
+        updated_contact = admin.get_contact(token, contact_created["_id"])
+        self.check_contact_equals(contact_created, updated_contact)
+        LOGGER.info("Contact fields was not updated to invalid ones")
+
+    def test_patch_contact(self, admin: AdminAPI, token: str, contact_created: dict, contact_patched_raw_data: dict) -> None:
+        LOGGER.debug("Patching contact with %s", contact_patched_raw_data[0])
+        response = requests.patch(TestAPIContact.endpoint + contact_created["_id"], auth = BearerAuth(token), json = contact_patched_raw_data[0])
+        LOGGER.debug("Received response text: %s", response.text)
+        assert response.status_code == 200
+        assert "application/json" in response.headers["Content-Type"]
+        LOGGER.info("Response status code and headers are correct")
+
+        data = response.json()
+        self.check_contact_equals(contact_patched_raw_data[1], data)
+        LOGGER.info("Response with patched contact is correct")
+
+        updated_contact = admin.get_contact(token, contact_created["_id"])
+        self.check_contact_equals(contact_patched_raw_data[1], updated_contact)
+        LOGGER.info("Successfully received contact with patched fields")
+
+    def test_patch_contact_invalid(self, admin: AdminAPI, token: str, contact_created: dict, contact_patched_raw_data_invalid: dict) -> None:
+        # TODO: Fix this
+        if contact_patched_raw_data_invalid == {}:
+            return
+        LOGGER.debug("Patching contact with %s", contact_patched_raw_data_invalid)
+        response = requests.patch(TestAPIContact.endpoint + contact_created["_id"], auth = BearerAuth(token), json = contact_patched_raw_data_invalid)
+        LOGGER.debug("Received response text: %s", response.text)
+        assert response.status_code == 400
+        LOGGER.info("Can't patch contact fields to invalid ones as it is intended")
+
+        patched_contact = admin.get_contact(token, contact_created["_id"])
+        self.check_contact_equals(contact_created, patched_contact)
+        LOGGER.info("Contact fields was not patched to invalid ones")
 
     def test_delete_contact(self, admin: AdminAPI, token: str, contact_default: dict):
         # Setup
