@@ -3,6 +3,7 @@ import logging
 
 import pytest
 
+from tests.api.contact.test_cases_contact import CONTACTS
 from tests.api.test_cases_user import USERS_REGISTRATION, USERS_REGISTRATION_INVALID
 from util.admin.admin_api import AdminAPI, AdminAPIException
 
@@ -35,6 +36,18 @@ def cleanup(admin: AdminAPI, unique_credentials: set):
 @pytest.fixture
 def user_default() -> dict:
     return USERS_REGISTRATION[0][0]
+
+@pytest.fixture
+def contact_default() -> dict:
+    return CONTACTS[0][0]
+
+@pytest.fixture
+def contact_list_default() -> dict:
+    contact_list = []
+    contact_list.append(CONTACTS[0][0])
+    contact_list.append(CONTACTS[1][0])
+    contact_list.append(CONTACTS[2][0])
+    return contact_list
 
 @pytest.fixture
 def user_registered(admin: AdminAPI, user_default):

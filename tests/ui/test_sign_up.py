@@ -1,7 +1,7 @@
 import logging
 
-from tests.ui.pages.sign_up import SignUpPage
 from src.util.admin.admin_api import AdminAPI
+from tests.ui.pages import SignUpPage
 
 LOGGER = logging.getLogger(__name__)
 
@@ -16,8 +16,8 @@ class TestUISignUp:
     def test_can_sign_up(self, admin: AdminAPI, sign_up_page: SignUpPage, user_default: dict) -> None:
         sign_up_page.open_page()
         self.enter_sign_up_data(sign_up_page, user_default)
-        sign_up_page.click_sign_up()
-        sign_up_page.verify_signed_up()
+        redirected_to = sign_up_page.click_sign_up()
+        assert redirected_to.is_browser_url_changed("https://thinking-tester-contact-list.herokuapp.com/contactList")
 
         # Cleanup
         token = admin.log_in(user_default["email"], user_default["password"])
@@ -26,10 +26,17 @@ class TestUISignUp:
     def test_sign_up_used_mail(self, sign_up_page: SignUpPage, user_registered: dict) -> None:
         sign_up_page.open_page()
         self.enter_sign_up_data(sign_up_page, user_registered)
-        sign_up_page.click_sign_up()
-        sign_up_page.verify_sign_up_failed()
+        redirected_to = sign_up_page.click_sign_up_expecting_failure()
+        assert redirected_to.is_error_present_with_text("Email address is already in use")
 
-    def test_button_sign_up_is_working(self, sign_up_page: SignUpPage) -> None:
+    def test_sign_up_invalid_user(self, sign_up_page: SignUpPage, user_registered: dict) -> None:
         sign_up_page.open_page()
-        sign_up_page.click_cancel()
-        sign_up_page.verify_cancel_button_works()
+        sign_up_page.enter_email("john.green mail.com")
+        sign_up_page.enter_password(1)
+        redirected_to = sign_up_page.click_sign_up_expecting_failure()
+        assert redirected_to.is_error_present_with_text("User validation failed")
+
+    def test_button_cancel_sign_up_is_working(self, sign_up_page: SignUpPage) -> None:
+        sign_up_page.open_page()
+        redirected_to = sign_up_page.click_cancel()
+        assert redirected_to.is_browser_url_changed("https://thinking-tester-contact-list.herokuapp.com/login")

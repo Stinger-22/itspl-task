@@ -36,10 +36,10 @@ Write in the README.md instructions for the execution of the automated tests.
 
 ## TODO Checklist
 - [x] Handle token with fixture
-- [ ] Use requests to write API tests
-- [ ] Write POM
-- [ ] Write UI tests
-- [ ] Write logging
+- [x] Use requests to write API tests
+- [x] Write POM
+- [x] Write UI tests
+- [x] Write logging
 - [ ] Write Usage and Description in README.md
 
 ### User API
@@ -75,3 +75,8 @@ Notes:
    - stateProvince: empty is allowed, max len 20
    - postalCode: empty not allowed, only numbers, len is [3; 7]
    - country: empty is allowed, max len 40
+
+### UI
+Notes:
+ - [Found: manually inspected in Firefox with DevTools] tbody is empty, each row is under table tag. Each table row should be under tbody. Nevethless, I'll write ui test to this part.
+ - [Found: manually inspected in Firefox with DevTools] id of each contact is sent to client, it's just set to be invisible
