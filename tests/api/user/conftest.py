@@ -1,10 +1,10 @@
 import pytest
 
 from tests.api.test_cases_user import (
-    USERS_REGISTRATION,
-    USERS_REGISTRATION_INVALID,
     USERS_PATCHED,
     USERS_PATCHED_INVALID,
+    USERS_REGISTRATION,
+    USERS_REGISTRATION_INVALID,
 )
 from tests.util.test_case_parse import get_test_case_id_payload_expected_id, get_test_case_id_payload_id
 
