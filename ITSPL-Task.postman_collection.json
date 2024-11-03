@@ -2,6 +2,7 @@
 	"info": {
 		"_postman_id": "a95021de-a68e-41b7-b472-fd54e4fcef3c",
 		"name": "ITSPL-Task",
+		"description": "Subject: [https://thinking-tester-contact-list.herokuapp.com/](https://thinking-tester-contact-list.herokuapp.com/)\n\nAPI Documentation: [https://documenter.getpostman.com/view/4012288/TzK2bEa8](https://documenter.getpostman.com/view/4012288/TzK2bEa8)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "34116961"
 	},
@@ -58,7 +59,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"_id\": \"111111111111111111111111\",\n    \"firstName\": \"John\",\n    \"lastName\": \"Green\",\n    \"email\": \"john.green@mail.com\",\n    \"password\": \"1234567890\"\n}",
+							"raw": "{\n    \"firstName\": \"John_updated\",\n    \"lastName\": \"Green_updated\",\n    \"email\": \"john.green_updated@mail.com\",\n    \"password\": \"1234567890_updated\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -216,7 +217,8 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"description": "Testing User entity endponts"
 		},
 		{
 			"name": "Contact",
@@ -238,7 +240,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"firstName\": \"Will\",\n    \"lastName\": \"Smith\",\n    \"birthdate\": \"1968-10-25\",\n    \"phone\": \"8005555555\",\n    \"street1\": \"1 Main St.\",\n    \"street2\": \"Apartment A\",\n    \"city\": \"New York\",\n    \"stateProvince\": \"NY\",\n    \"country\": \"USA\"\n}",
+							"raw": "{\n    \"firstName\": \"Will\",\n    \"lastName\": \"Smith\",\n    \"birthdate\": \"1968-09-25\",\n    \"email\": \"will.smith@mail.com\",\n    \"phone\": \"1234567890\",\n    \"street1\": \"1 Main St.\",\n    \"street2\": \"Apartment A\",\n    \"city\": \"New York\",\n    \"stateProvince\": \"NY\",\n    \"postalCode\": \"10118\",\n    \"country\": \"USA\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -293,6 +295,16 @@
 				{
 					"name": "Get Contact",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -318,7 +330,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"firstName\": \"Will\",\n    \"lastName\": \"Smith\",\n    \"birthdate\": \"1968-10-25\",\n    \"email\": \"\",\n    \"phone\": \"8005555555\",\n    \"street1\": \"1 Main St.\",\n    \"street2\": \"Apartment A\",\n    \"city\": \"New York\",\n    \"stateProvince\": \"NY\",\n    \"country\": \"USA\"\n}",
+							"raw": "{\n    \"firstName\": \"Will_updated\",\n    \"lastName\": \"Smith_updated\",\n    \"birthdate\": \"1970-10-25\",\n    \"email\": \"will.smith_updated@mail.com\",\n    \"phone\": \"1234567890\",\n    \"street1\": \"Eiffel Tower 35\",\n    \"street2\": \"House 33\",\n    \"city\": \"Paris\",\n    \"stateProvince\": \"PR\",\n    \"postalCode\": \"333333\",\n    \"country\": \"France\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -348,7 +360,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\n}",
+							"raw": "{\n    \"firstName\": \"Will_patched\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -374,6 +386,16 @@
 				{
 					"name": "Delete Contact List",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"body": {
@@ -440,7 +462,8 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"description": "Testing Contact entity endponts"
 		}
 	],
 	"auth": {
