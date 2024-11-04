@@ -88,7 +88,3 @@ For more info about CLI parameters read docs.
         ├── __init__.py
         └── test_case_parse.py
 ```
-
-### User API
-Notes:
- - [Found: test_log_out_user has warning] When you log out every token is invalidated - not only the one used to log out. A real use scenario is when you are logged in from your phone and PC and when you log out on your phone you can't continue the session on your PC.
