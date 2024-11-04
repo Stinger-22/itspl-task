@@ -1,5 +1,6 @@
 import contextlib
 import logging
+import warnings
 
 import pytest
 
@@ -59,8 +60,10 @@ def user_registered(admin: AdminAPI, user_default):
         LOGGER.info("Deleted registered user")
     except AdminAPIException as exception:
         LOGGER.warning("Registered user was not deleted from the first try")
+        warnings.warn("Registered user was not deleted from the first try")
         LOGGER.warning("For some reason original token was invalidated. Couldn't delete user required for test from the first attempt")
-        LOGGER.warning("Logging in to receive new token")
+        warnings.warn("For some reason original token was invalidated. Couldn't delete user required for test from the first attempt")
+        LOGGER.info("Logging in to receive new token")
         token = admin.log_in(user_default["email"], user_default["password"])
         admin.delete_user(token)
         LOGGER.info("Registered user was deleted from the second try")
